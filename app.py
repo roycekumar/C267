@@ -30,6 +30,12 @@ def upload_image():
         file_data=oil_effect(decode_array_to_img)
     elif operation_selection=="rgb":
         file_data=rgb_effect(decode_array_to_img)
+    elif operation_selection=="water":
+        file_data=water_color_effect(decode_array_to_img)
+    elif operation_selection=="invert":
+        file_data=invert(decode_array_to_img)
+    elif operation_selection=="hdr":
+        file_data=HDR(decode_array_to_img)
     else:
         print("No Image Selected")
 
@@ -70,6 +76,18 @@ def oil_effect(decode_array_to_img):
 def rgb_effect(decode_array_to_img):
     rgb_effect_img=cv2.cvtColor(decode_array_to_img,cv2.COLOR_BGR2RGB)
     status,output_img=cv2.imencode(".PNG",rgb_effect_img)
+    return output_img
+def water_color_effect(decode_array_to_img):
+    water_effect=cv2.stylization(decode_array_to_img,sigma_s=60,sigma_r=0.6)
+    status,output_img=cv2.imencode(".PNG",water_effect)
+    return output_img
+def invert(decode_array_to_img):
+    invert_effect=cv2.bitwise_not(decode_array_to_img)
+    status,output_img=cv2.imencode(".PNG",invert_effect)
+    return output_img
+def HDR(decode_array_to_img):
+    hdr_effect=cv2.detailEnhance(decode_array_to_img,sigma_s=12,sigma_r=0.15)
+    status,output_img=cv2.imencode(".PNG",hdr_effect)
     return output_img
 # Ends here
 
